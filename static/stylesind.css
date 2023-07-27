@@ -1,0 +1,77 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  background-image: url('https://images2.alphacoders.com/125/1256748.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+h1 {
+  position: top, center, sticky;
+  font-size: 5rem; /* Increase the font size for "SpotPlay" */
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  animation: pulsate 2s infinite;
+}
+
+input {
+  padding: 10px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+  width: 500px;
+}
+::-webkit-input-placeholder {
+  text-align: center;
+}
+:-moz-placeholder {
+  text-align: center;
+}
+button {
+  margin-top: 20px;
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #1db954;
+  color: #fff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #127935;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

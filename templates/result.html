@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Recommended Songs</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <center><h1>Recommended Songs</h1></center>
+        <div class="song-grid">
+            {% for track in tracks %}
+            <div class="song-card">
+                <div class="album-art" style="background-image: url({{ track.image_url }})">
+                    <a href="{{ track.external_url }}" class="listen-now" target="_blank">
+                        Listen Now
+                    </a>
+                </div>
+                <div class="song-name">
+                    {{ track.name }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% if playlist_link %}
+        <div class="playlist-link">
+            <a href="{{ playlist_link }}" target="_blank">Listen to Playlist on Spotify</a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

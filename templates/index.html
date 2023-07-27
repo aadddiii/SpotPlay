@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SpotPlay</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesind.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>SpotPlay</h1>
+    </div>
+    <div class="input-container">
+      <form action="/" method="post">
+        <input type="text" name="link" placeholder="Enter Spotify song link">
+        <p></p>
+        <button type="submit">Get Recommendations</button>
+      </form>
+      {% if error %}
+      <p class="error">{{ error }}</p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>
