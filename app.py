@@ -5,10 +5,11 @@ import spotify_cli
 import pandas as pd
 from spotipy.oauth2 import SpotifyOAuth
 import recommendations as rec
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
-
+global tracks
+tracks = []
 # Replace with your Spotify API credentials
 client_id = keys.id
 client_secret = keys.secret
@@ -28,7 +29,10 @@ def index():
             return recommend(link)
     return render_template("index.html")
 
-def recommend(link):
+@app.route("/recommend", methods=["POST"])
+def recommend():
+    link = request.form.get("link")
+    
     song_id = re.search(r'(?<=track/)[\w]+', link)
     if song_id:
         song_id = song_id.group(0)
@@ -43,7 +47,6 @@ def recommend(link):
             top_songs = rec.content_based_recommendation(input_features, df_without_input, top_n=10) 
 
             # Create a dictionary to store track information
-            tracks = []
 
             for index, song in top_songs.iterrows():
                 track_info = {
@@ -54,23 +57,27 @@ def recommend(link):
                     'external_url': 'http://open.spotify.com/track/%s' % song['track_id'],
                 }
                 tracks.append(track_info)
-            playlist_name = "Recommended Songs Playlist"
-            playlist_description = "Playlist of recommended songs based on the input track."
-            playlist = sp.user_playlist_create(user=sp.me()['id'], name=playlist_name, public=False, description=playlist_description)
-
-            # Add the recommended tracks to the playlist
-            tracks_to_add = []
-            for i in range(len(tracks)):
-                tracks_to_add.append(tracks[i]['id'])
-            sp.playlist_add_items(playlist_id=playlist['id'], items=tracks_to_add)
-
-            # Get the link of the created playlist
-            playlist_link = playlist['external_urls']['spotify']
-
+                
             # Render the result.html template with the track information
-            return render_template("result.html", tracks=tracks, playlist_link=playlist_link)
+            return render_template("result.html", tracks=tracks)
 
     return render_template("index.html", error="Invalid Spotify song link.")
+
+@app.route("/create_playlist", methods=["POST", "GET"])
+def create_playlist():
+    playlist_name = "Recommended Songs Playlist"
+    playlist_description = "Playlist of recommended songs based on the input track."
+    playlist = sp.user_playlist_create(user=sp.me()['id'], name=playlist_name, public=False, description=playlist_description)
+
+    # Add the recommended tracks to the playlist
+    tracks_to_add = []
+    for track in tracks:
+        tracks_to_add.append(track['id'])
+    sp.playlist_add_items(playlist_id=playlist['id'], items=tracks_to_add)
+    
+    playlist_link = playlist['external_urls']['spotify']
+    return redirect(f'{playlist_link}')
+
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -129,13 +129,29 @@ body {
   
   /* Hover effect for song cards */
   .song-card:hover {
-    box-shadow: 0 4px 8px rgba(255, 255, 254, 0.2);
+    box-shadow: 0 4px 8px rgba(189, 189, 30, 0.2);
   }
   
   .song-card:hover img {
     transform: scale(1.05);
   }
   
+  button {
+    margin-top: 20px;
+    padding: 12px 20px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #1db954;
+    color: #fff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #127935;
+  }
   .playlist-link {
     margin-top: 20px;
     text-align: center;
