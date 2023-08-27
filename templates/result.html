@@ -11,7 +11,7 @@
         <div class="song-grid">
             {% for track in tracks %}
             <div class="song-card">
-                <div class="album-art" style="background-image: url({{ track.image_url }})">
+                <div class="album-art" style="background-image: url({{track.image_url}})">
                     <a href="{{ track.external_url }}" class="listen-now" target="_blank">
                         Listen Now
                     </a>
@@ -22,11 +22,11 @@
             </div>
             {% endfor %}
         </div>
-        {% if playlist_link %}
         <div class="playlist-link">
-            <a href="{{ playlist_link }}" target="_blank">Listen to Playlist on Spotify</a>
+            <form action="/create_playlist" method="post">
+            <button type="submit">Listen to Playlist</button>
+            </form>
         </div>
-        {% endif %}
     </div>
 </body>
 </html>
