@@ -21,7 +21,6 @@ def get_spotify_client():
     sp = spotipy.Spotify(auth_manager=auth_manager)
     return sp
 
-# Initialize Spotipy with credentials
 sp = get_spotify_client()
 
 def get_info(link):   

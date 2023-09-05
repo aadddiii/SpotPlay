@@ -1,21 +1,20 @@
 import keys
 import re
 import spotipy
-import spotify_cli
+import functions
 import pandas as pd
 from spotipy.oauth2 import SpotifyOAuth
 import recommendations as rec
 from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
-global tracks
-tracks = []
-# Replace with your Spotify API credentials
 client_id = keys.id
 client_secret = keys.secret
 scope = "playlist-modify-private playlist-modify-public"
 
-# Initialize Spotipy with SpotifyOAuth
+global tracks
+tracks = []
+
 auth_manager = SpotifyOAuth(client_id=client_id, client_secret=client_secret, scope=scope, redirect_uri="http://localhost")
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
@@ -31,8 +30,7 @@ def index():
 
 @app.route("/recommend", methods=["POST"])
 def recommend():
-    link = request.form.get("link")
-    
+    link = request.form.get("link")    
     song_id = re.search(r'(?<=track/)[\w]+', link)
     if song_id:
         song_id = song_id.group(0)
@@ -46,14 +44,12 @@ def recommend():
             df_without_input = df[(df['track_id'] != track_id) & (df['track_name'] != input_song_name) & (df['artists'] != input_artist)]
             top_songs = rec.content_based_recommendation(input_features, df_without_input, top_n=10) 
 
-            # Create a dictionary to store track information
-
-            for index, song in top_songs.iterrows():
+            for song in top_songs:
                 track_info = {
                     'id': song['track_id'],
                     'name': song['track_name'],
                     'artists': song['artists'],
-                    'image_url': spotify_cli.get_album_art_url(song['track_id']),
+                    'image_url': functions.get_album_art_url(song['track_id']),
                     'external_url': 'http://open.spotify.com/track/%s' % song['track_id'],
                 }
                 tracks.append(track_info)
@@ -76,7 +72,7 @@ def create_playlist():
     sp.playlist_add_items(playlist_id=playlist['id'], items=tracks_to_add)
     
     playlist_link = playlist['external_urls']['spotify']
-    return redirect(f'{playlist_link}')
+    return redirect(location = f'{playlist_link}', code = 302)
 
 
 if __name__ == "__main__":
